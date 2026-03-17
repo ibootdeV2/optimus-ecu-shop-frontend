@@ -3,8 +3,7 @@ import { AuthProvider } from "./context/AuthContext";
 import Shop      from "./pages/Shop";
 import AuthPage  from "./pages/AuthPage";
 import Dashboard from "./pages/Dashboard";
-import Admin     from "./pages/Admin";
-import AdminLogin from "./pages/AdminLogin";
+import Admin, { AdminLogin} from "./pages/Admin";
 import "./App.css";
 
 export default function App() {
