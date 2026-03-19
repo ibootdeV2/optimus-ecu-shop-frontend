@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import { useState, useEffect } from "react";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import Shop      from "./pages/Shop";
@@ -8,9 +7,9 @@ import Admin, { AdminLogin } from "./pages/Admin";
 import "./App.css";
 
 // ── Secret admin URL slug — change this to whatever you want
-// Users access admin via: https://yoursite.com/?admin=DagoAutoAdmin
+// Users access admin via: https://yoursite.com/?admin=x7k9p2
 // No button, no link — completely hidden from normal users
-const ADMIN_SECRET = "DagoAutoAdmin";
+const ADMIN_SECRET = "x7k9p2";
 
 function AppRouter() {
   const { user, loading } = useAuth();
@@ -82,20 +81,5 @@ export default function App() {
     <AuthProvider>
       <AppRouter />
     </AuthProvider>
-=======
-export default function App() {
-  return (
-    <div style={{
-      height: "100vh",
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      flexDirection: "column",
-      fontFamily: "Arial"
-    }}>
-      <h1>🚧 Site en maintenance</h1>
-      <p>Nous revenons très bientôt.</p>
-    </div>
->>>>>>> b062d13db9c417016cd5177ad7f7c11e25a64d7f
   );
 }
