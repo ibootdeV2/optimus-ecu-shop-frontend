@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { useState, useEffect } from "react";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import Shop      from "./pages/Shop";
@@ -81,5 +82,20 @@ export default function App() {
     <AuthProvider>
       <AppRouter />
     </AuthProvider>
+=======
+export default function App() {
+  return (
+    <div style={{
+      height: "100vh",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      flexDirection: "column",
+      fontFamily: "Arial"
+    }}>
+      <h1>🚧 Site en maintenance</h1>
+      <p>Nous revenons très bientôt.</p>
+    </div>
+>>>>>>> b062d13db9c417016cd5177ad7f7c11e25a64d7f
   );
 }
