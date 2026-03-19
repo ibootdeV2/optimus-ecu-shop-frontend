@@ -277,3 +277,77 @@ body { font-family: 'Barlow', sans-serif; background: var(--bg); color: var(--te
   .form-grid-3, .form-grid-2 { grid-template-columns: 1fr; }
   .stats-row { grid-template-columns: 1fr 1fr; }
 }
+
+/* ════════════════ MANAGER (Brands & ECU Types) ════════════════ */
+.manager-section { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; margin-bottom: 20px; }
+.manager-title { font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 700; margin-bottom: 6px; }
+.manager-desc { font-size: 13px; color: var(--muted); margin-bottom: 20px; }
+.manager-add-row { display: flex; gap: 10px; margin-bottom: 16px; align-items: center; }
+.manager-input { background: var(--bg3); border: 1px solid var(--border); color: var(--text); border-radius: 6px; padding: 8px 12px; font-size: 13px; font-family: 'Barlow', sans-serif; flex: 1; }
+.manager-input:focus { outline: none; border-color: var(--accent); }
+.manager-add-btn { display: flex; align-items: center; gap: 6px; padding: 8px 16px; background: var(--accent); color: white; border: none; border-radius: 6px; font-size: 13px; font-weight: 500; cursor: pointer; white-space: nowrap; font-family: 'Barlow', sans-serif; transition: background 0.15s; }
+.manager-add-btn:hover { background: var(--accent2); }
+.manager-list { display: flex; flex-direction: column; gap: 6px; }
+.manager-item { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; transition: border-color 0.15s; }
+.manager-item.selected { border-color: var(--accent); }
+.manager-item:hover { border-color: var(--border2); }
+.manager-item-text { display: flex; align-items: center; gap: 10px; flex: 1; font-size: 13px; color: var(--text); }
+.manager-item-num { width: 22px; height: 22px; background: var(--bg2); border: 1px solid var(--border2); border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 11px; color: var(--muted); flex-shrink: 0; }
+.manager-item-brand { font-weight: 500; color: var(--text); }
+.manager-item-count { font-size: 12px; color: var(--muted); }
+.manager-item-actions { display: flex; gap: 6px; }
+.manager-edit-btn { padding: 5px 8px; background: none; border: 1px solid var(--border2); color: var(--muted); border-radius: 5px; cursor: pointer; display: flex; align-items: center; transition: all 0.15s; }
+.manager-edit-btn:hover { color: var(--blue); border-color: var(--blue); }
+.manager-del-btn { padding: 5px 8px; background: none; border: 1px solid rgba(229,23,31,0.3); color: var(--accent); border-radius: 5px; cursor: pointer; display: flex; align-items: center; transition: all 0.15s; }
+.manager-del-btn:hover { background: rgba(229,23,31,0.1); }
+.manager-nav-btn { padding: 5px 12px; background: none; border: 1px solid var(--border2); color: var(--muted); border-radius: 5px; cursor: pointer; font-size: 12px; font-family: 'Barlow', sans-serif; transition: all 0.15s; }
+.manager-nav-btn:hover { color: var(--text); border-color: var(--muted); }
+.manager-edit-row { display: flex; gap: 8px; align-items: center; flex: 1; }
+.manager-save-btn { padding: 6px 12px; background: var(--green); color: white; border: none; border-radius: 5px; font-size: 12px; cursor: pointer; font-family: 'Barlow', sans-serif; white-space: nowrap; }
+.manager-cancel-btn { padding: 6px 12px; background: none; border: 1px solid var(--border2); color: var(--muted); border-radius: 5px; font-size: 12px; cursor: pointer; font-family: 'Barlow', sans-serif; white-space: nowrap; }
+.manager-empty { font-size: 13px; color: var(--muted); padding: 16px 0; text-align: center; }
+
+/* Sub-tabs */
+.sub-tabs { display: flex; gap: 4px; margin-bottom: 20px; flex-wrap: wrap; }
+.sub-tab { padding: 7px 16px; background: none; border: 1px solid var(--border); color: var(--muted); border-radius: 6px; font-size: 12px; cursor: pointer; font-family: 'Barlow', sans-serif; transition: all 0.15s; }
+.sub-tab.active { background: var(--bg3); color: var(--text); border-color: var(--border2); font-weight: 500; }
+.sub-tab:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* Breadcrumb */
+.manager-breadcrumb { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; font-size: 13px; color: var(--muted); }
+.breadcrumb-btn { background: none; border: none; color: var(--muted); font-size: 13px; cursor: pointer; padding: 0; font-family: 'Barlow', sans-serif; text-decoration: underline; }
+.breadcrumb-btn:hover { color: var(--text); }
+.breadcrumb-current { color: var(--text); font-weight: 500; }
+
+/* Engine add grid */
+.engine-add-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 12px; }
+.engine-list { display: flex; flex-direction: column; gap: 6px; }
+.engine-item { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; }
+.engine-item-info { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.engine-disp { font-family: 'Barlow Condensed', sans-serif; font-size: 15px; font-weight: 600; color: var(--text); }
+.engine-fuel { font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 4px; text-transform: uppercase; }
+.engine-fuel.diesel { background: #dbeafe; color: #1e40af; }
+.engine-fuel.essence { background: #fef3c7; color: #b45309; }
+.engine-power { font-size: 13px; color: var(--text); }
+.engine-brand { font-size: 11px; color: var(--muted); font-family: monospace; }
+
+@media (max-width: 700px) {
+  .engine-add-grid { grid-template-columns: 1fr 1fr; }
+  .manager-add-row { flex-wrap: wrap; }
+}
+
+/* ════════════════ APP LOADING SCREEN ════════════════ */
+.app-loading {
+  min-height: 100vh;
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.app-loading-ring {
+  width: 40px; height: 40px;
+  border: 3px solid var(--border2);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}

@@ -197,7 +197,7 @@ export default function Shop({ nav }) {
         <div className="header-inner">
           <div className="site-logo">
             <ChipIcon />
-            <span>ECU<strong>Original</strong></span>
+            <span>DAGО<strong>AUTO</strong></span>
             <span className="catalog-count">{CATALOG_STATS.totalBrands} marques · {CATALOG_STATS.totalModels} modèles</span>
           </div>
           <div className="header-right">
@@ -216,7 +216,7 @@ export default function Shop({ nav }) {
                 <button className="nav-btn" onClick={() => nav("auth")}>Connexion</button>
               </div>
             )}
-            <button className="admin-link" onClick={() => nav("admin-login")}>🔒 Admin</button>
+            {/* Admin access via secret URL only — no button shown */}
           </div>
         </div>
       </header>
@@ -224,7 +224,7 @@ export default function Shop({ nav }) {
       {/* ── HERO */}
       <div className="hero">
         <div className="hero-inner">
-          <h1 className="hero-title">Fichiers ECU <span>Originaux</span></h1>
+          <h1 className="hero-title">DAGOAUTO — Fichiers ECU</h1>
           <p className="hero-sub">
             {CATALOG_STATS.totalBrands} marques · {CATALOG_STATS.totalModels} modèles · {CATALOG_STATS.totalEngines} motorisations
             &nbsp;· Essence &amp; Diesel · <strong style={{color:"#22c55e"}}>100% gratuit</strong>
