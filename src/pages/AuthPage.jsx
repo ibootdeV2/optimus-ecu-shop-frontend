@@ -1,16 +1,16 @@
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
-export default function AuthPage({ nav }) {
+export default function AuthPage() {
+  const navigate = useNavigate(); // Initialisé
   const { login } = useAuth();
   const [mode, setMode] = useState("login");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
 
-  const handleGoogle = () => {
-    window.location.href = `${import.meta.env.VITE_API_URL}/api/auth/google`;
+  const onLoginSuccess = (userData, token) => {
+    login(userData, token);
+    navigate("/"); // Redirige vers le shop
   };
-
   return (
     <div className="auth-page">
       <div className="auth-box">
