@@ -53,3 +53,93 @@ body { font-family: 'Barlow', sans-serif; background: var(--bg); color: var(--te
   border: none; border-radius: 8px; font-weight: 700; cursor: pointer; margin-top: 10px;
 }
 .auth-submit:hover { background: var(--accent2); }
+
+/* --- COMPLÉMENT ADMIN --- */
+
+/* Conteneur de la page login Admin */
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+}
+
+/* Boîte de login Admin (identique à l'user) */
+.login-box {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  padding: 40px;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 380px;
+  text-align: center;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+}
+
+.login-logo { font-family: 'Barlow Condensed'; font-size: 26px; font-weight: 700; margin-bottom: 25px; }
+.login-logo strong { color: var(--accent); }
+
+/* Champs de texte génériques */
+.input-field {
+  width: 100%;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  color: white;
+  padding: 14px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  outline: none;
+  box-sizing: border-box;
+}
+.input-field:focus { border-color: var(--accent); }
+
+/* Dashboard Admin : Cartes de Stats */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
+}
+.stat-card {
+  background: var(--bg2);
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  text-align: center;
+}
+.stat-card h3 { font-size: 32px; color: var(--accent); margin: 0; }
+.stat-card p { color: var(--muted); font-size: 12px; text-transform: uppercase; margin-top: 5px; }
+
+/* Onglets Admin */
+.admin-tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 10px;
+}
+.admin-tabs button {
+  background: none;
+  border: none;
+  color: var(--muted);
+  padding: 10px 20px;
+  cursor: pointer;
+  font-weight: 600;
+  border-radius: 6px;
+}
+.admin-tabs button.active {
+  background: var(--accent);
+  color: white;
+}
+
+/* Tableaux Admin */
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--bg2);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.admin-table th { background: var(--bg3); padding: 15px; text-align: left; font-size: 12px; color: var(--muted); }
+.admin-table td { padding: 15px; border-bottom: 1px solid var(--border); }

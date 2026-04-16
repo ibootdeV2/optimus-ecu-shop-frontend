@@ -8,32 +8,27 @@ export function AdminLogin() {
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
   
-  const handle = async () => {
-    try {
-      const res = await fetch(`${API_URL}/api/admin/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password: pass })
-      });
-      const d = await res.json();
-      if (d.token) {
-        localStorage.setItem("ecu_token", d.token);
-        window.location.reload();
-      } else {
-        alert(d.error || "Accès refusé");
-      }
-    } catch (err) {
-      alert("Le serveur ne répond pas");
-    }
-  };
-
   return (
     <div className="login-page">
       <div className="login-box">
         <div className="login-logo">DAGO<strong>AUTO</strong> Admin</div>
-        <input className="input-field" placeholder="Email Admin" onChange={e => setEmail(e.target.value)} />
-        <input className="input-field" type="password" placeholder="Mot de passe" onChange={e => setPass(e.target.value)} />
-        <button className="login-btn" onClick={handle}>Se connecter</button>
+        <p style={{color: "#888", marginBottom: "20px", fontSize: "14px"}}>Espace sécurisé</p>
+        
+        <input 
+          className="input-field" 
+          placeholder="Email de l'administrateur" 
+          onChange={e => setEmail(e.target.value)} 
+        />
+        <input 
+          className="input-field" 
+          type="password" 
+          placeholder="Mot de passe" 
+          onChange={e => setPass(e.target.value)} 
+        />
+        
+        <button className="auth-submit" style={{width: "100%"}}>
+          Se connecter au Dashboard
+        </button>
       </div>
     </div>
   );
@@ -62,28 +57,29 @@ export default function Admin({ nav }) {
   if (!token) return <AdminLogin />;
   if (loading) return <div className="app-loading">Chargement...</div>;
 
-  return (
+   return (
     <div className="admin-wrap">
-      <div className="admin-topbar" style={{display:"flex", justifyContent:"space-between", alignItems:"center"}}>
-        <h1>DAGOAUTO <span>Admin</span></h1>
-        <button onClick={() => { localStorage.clear(); window.location.reload(); }} className="auth-submit" style={{width:"auto", padding:"8px 15px"}}>Déconnexion</button>
+      <header style={{display: "flex", justifyContent: "space-between", marginBottom: "30px"}}>
+        <h1>Administration</h1>
+        <button onClick={() => nav("shop")} className="nav-btn-ghost">Boutique</button>
+      </header>
+
+      <div className="stats-row">
+        <div className="stat-card"><h3>124</h3><p>Fichiers</p></div>
+        <div className="stat-card"><h3>450</h3><p>Utilisateurs</p></div>
+        <div className="stat-card"><h3>89</h3><p>Downloads</p></div>
+      </div>
+
+      <div className="admin-tabs">
+        <button className="active">Utilisateurs</button>
+        <button>Catalogue</button>
+        <button>Marques</button>
       </div>
 
       <table className="admin-table">
-        <thead><tr><th>Utilisateur</th><th>Email</th><th>Actions</th></tr></thead>
+        <thead><tr><th>Nom</th><th>Email</th><th>Actions</th></tr></thead>
         <tbody>
-          {users.map(u => (
-            <tr key={u.id}>
-              <td>
-                <div className="name-with-tooltip">
-                  {u.name}
-                  <div className="tooltip">📦 {u.total_files || 0} téléchargements</div>
-                </div>
-              </td>
-              <td>{u.email}</td>
-              <td><button className="tbl-del">Gérer</button></td>
-            </tr>
-          ))}
+           {/* Vos données ici */}
         </tbody>
       </table>
     </div>
