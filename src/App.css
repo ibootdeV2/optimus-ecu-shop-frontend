@@ -5,83 +5,61 @@
   --bg2:     #151518;
   --bg3:     #1c1c21;
   --border:  #2a2a32;
-  --border2: #3a3a45;
   --text:    #f0f0f2;
   --muted:   #8888a0;
   --accent:  #e5171f;
   --accent2: #ff4d4d;
   --green:   #22c55e;
-  --radius:  10px;
 }
 
-body { 
-  font-family: 'Barlow', sans-serif; 
-  background: var(--bg); 
-  color: var(--text); 
-  margin: 0;
+body { font-family: 'Barlow', sans-serif; background: var(--bg); color: var(--text); margin: 0; }
+
+/* LOGIN PAGES (User & Admin) */
+.login-page, .auth-page { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
+.login-box, .auth-box { 
+  background: var(--bg2); border: 1px solid var(--border); padding: 40px; 
+  border-radius: 16px; width: 100%; max-width: 400px; text-align: center;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
 }
+.login-logo, .auth-logo { font-family: 'Barlow Condensed'; font-size: 26px; font-weight: 700; margin-bottom: 20px; }
+.login-logo strong, .auth-logo strong { color: var(--accent); }
 
-/* AUTH PAGE STYLE */
-.auth-page { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: var(--bg); }
-.auth-box { background: var(--bg2); border: 1px solid var(--border); padding: 40px; border-radius: 16px; width: 400px; text-align: center; }
-.auth-logo { font-family: 'Barlow Condensed'; font-size: 24px; font-weight: 700; margin-bottom: 20px; color: var(--text); }
-.auth-logo strong { color: var(--accent); }
+.input-field { 
+  width: 100%; background: var(--bg3); border: 1px solid var(--border); 
+  color: white; padding: 12px; border-radius: 8px; font-size: 14px; 
+  margin-bottom: 15px; outline: none; box-sizing: border-box;
+}
+.input-field:focus { border-color: var(--accent); }
 
-.auth-tabs { display: flex; gap: 5px; margin-bottom: 20px; background: var(--bg3); padding: 5px; border-radius: 8px; }
-.auth-tab { flex: 1; border: none; background: none; color: var(--muted); padding: 8px; cursor: pointer; border-radius: 6px; }
-.auth-tab.active { background: var(--bg2); color: var(--text); }
+.login-btn, .auth-submit { 
+  width: 100%; padding: 14px; background: var(--accent); color: white; 
+  border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.2s; 
+}
+.login-btn:hover { background: var(--accent2); }
 
-.auth-field { text-align: left; margin-bottom: 15px; }
-.auth-field label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 5px; text-transform: uppercase; }
-.auth-field input { width: 100%; background: var(--bg3); border: 1px solid var(--border); color: white; padding: 12px; border-radius: 8px; }
+/* SHOP DESIGN */
+.site-header { background: var(--bg2); border-bottom: 1px solid var(--border); padding: 15px 20px; }
+.header-inner { max-width: 1200px; margin: auto; display: flex; justify-content: space-between; align-items: center; }
+.search-bar-pro { display: flex; gap: 10px; padding: 20px; background: var(--bg2); border-radius: 12px; border: 1px solid var(--border); margin: 20px auto; max-width: 800px; }
+.search-bar-pro select { flex: 1; padding: 12px; background: #000; color: #fff; border: 1px solid #333; border-radius: 8px; cursor: pointer; }
 
-.auth-submit { width: 100%; padding: 12px; background: var(--accent); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; margin-top: 10px; }
-.google-btn { width: 100%; padding: 10px; background: white; color: black; border: none; border-radius: 8px; display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer; margin-bottom: 15px; }
+.cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; padding: 20px; max-width: 1200px; margin: auto; }
+.file-card { background: var(--bg2); border: 1px solid var(--border); padding: 20px; border-radius: 15px; transition: 0.3s; }
+.file-card:hover { border-color: var(--accent); transform: translateY(-5px); }
+.tag-badge { font-size: 10px; padding: 2px 8px; border-radius: 4px; background: var(--accent); color: white; margin-right: 5px; text-transform: uppercase; }
 
 /* TOOLTIP (INFO FLOTTANTE) */
-.name-with-tooltip { position: relative; display: inline-block; cursor: help; }
+.name-with-tooltip { position: relative; display: inline-block; cursor: help; color: var(--accent); font-weight: 600; }
 .tooltip {
   visibility: hidden; opacity: 0; position: absolute; bottom: 125%; left: 50%;
   transform: translateX(-50%); background: #1c1c21; color: white; padding: 10px;
   border-radius: 8px; border: 1px solid var(--accent); z-index: 100; min-width: 180px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.5); transition: 0.2s;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.5); transition: 0.2s; pointer-events: none;
 }
 .name-with-tooltip:hover .tooltip { visibility: visible; opacity: 1; }
 
 /* ADMIN TABLES */
-.admin-wrap { padding: 40px; }
-.admin-table { width: 100%; border-collapse: collapse; background: var(--bg2); border-radius: 12px; overflow: hidden; }
-.admin-table th { background: var(--bg3); padding: 15px; text-align: left; color: var(--muted); font-size: 12px; text-transform: uppercase; }
+.admin-wrap { padding: 40px; max-width: 1200px; margin: auto; }
+.admin-table { width: 100%; border-collapse: collapse; background: var(--bg2); border-radius: 12px; overflow: hidden; margin-top: 20px; }
+.admin-table th { background: var(--bg3); padding: 15px; text-align: left; font-size: 12px; color: var(--muted); }
 .admin-table td { padding: 15px; border-bottom: 1px solid var(--border); }
-.row-banned { opacity: 0.5; filter: grayscale(1); }
-
-/* SHOP CARDS */
-.cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; padding: 20px; }
-.file-card { background: var(--bg2); border: 1px solid var(--border); padding: 20px; border-radius: 15px; transition: 0.3s; }
-.file-card:hover { border-color: var(--accent); transform: translateY(-5px); }
-
-.google-btn {
-  width: 100%;
-  padding: 12px;
-  background: white;
-  color: black;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  cursor: pointer;
-  font-weight: 600;
-  margin-bottom: 20px;
-  font-family: inherit;
-}
-.google-btn:hover {
-  background: #f7f7f7;
-}
-.auth-divider {
-  margin: 15px 0;
-  color: var(--muted);
-  font-size: 12px;
-  text-transform: uppercase;
-}
