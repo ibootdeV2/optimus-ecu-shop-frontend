@@ -7,13 +7,13 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const saved = localStorage.getItem("ecu_user");
-    if (saved && saved !== "undefined") {
-      try {
+    try {
+      const saved = localStorage.getItem("ecu_user");
+      if (saved && saved !== "undefined") {
         setUser(JSON.parse(saved));
-      } catch (e) {
-        localStorage.removeItem("ecu_user");
       }
+    } catch (e) {
+      console.error("Erreur session:", e);
     }
     setLoading(false);
   }, []);
@@ -27,7 +27,7 @@ export function AuthProvider({ children }) {
   const logout = () => {
     localStorage.clear();
     setUser(null);
-    window.location.reload();
+    window.location.href = "/login";
   };
 
   return (
@@ -37,4 +37,10 @@ export function AuthProvider({ children }) {
   );
 }
 
-export const useAuth = () => useContext(AuthContext);
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (context === undefined) {
+    throw new Error("useAuth doit être utilisé à l'intérieur d'un AuthProvider");
+  }
+  return context;
+};

@@ -9,25 +9,24 @@ import Shop from "./pages/Shop";
 import Admin, { AdminLogin } from "./pages/Admin";
 import Dashboard from "./pages/Dashboard";
 
-// Composant pour protéger les pages (nécessite d'être connecté)
+// Protection des pages
 const PrivateRoute = ({ children }) => {
   const { user, loading } = useAuth();
-  if (loading) return <div className="app-loading"><div className="app-loading-ring"></div></div>;
+  if (loading) return <div className="app-loading">Chargement...</div>;
   return user ? children : <Navigate to="/login" />;
 };
 
-// Gestionnaire de Token (pour Google OAuth ou lien direct)
+// Capture du Token Google
 const TokenHandler = ({ children }) => {
   const { login } = useAuth();
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const token = params.get("token");
     if (token) {
-      // On connecte l'utilisateur avec le token reçu
-      login({ email: "Utilisateur Google" }, token);
+      login({ name: "Utilisateur Google" }, token);
       window.history.replaceState({}, "", window.location.pathname);
     }
-  }, []);
+  }, [login]);
   return children;
 };
 
@@ -35,18 +34,20 @@ function AppRoutes() {
   return (
     <TokenHandler>
       <Routes>
-        {/* Public */}
+        {/* Route par défaut (Shop) */}
+        <Route path="/" element={<PrivateRoute><Shop /></PrivateRoute>} />
+        
+        {/* Authentification */}
         <Route path="/login" element={<AuthPage />} />
         
-        {/* Privé (Catalogue par défaut) */}
-        <Route path="/" element={<PrivateRoute><Shop /></PrivateRoute>} />
+        {/* Espace Client */}
         <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
 
-        {/* Admin (Lien secret ou direct) */}
+        {/* Administration */}
         <Route path="/admin-login" element={<AdminLogin />} />
         <Route path="/admin" element={<Admin />} />
 
-        {/* Redirection si URL inconnue */}
+        {/* Fallback si l'URL n'existe pas */}
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </TokenHandler>
