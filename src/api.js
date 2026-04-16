@@ -13,13 +13,11 @@ export const apiCall = async (endpoint, method = "GET", body = null) => {
       body: body ? JSON.stringify(body) : null,
     });
     
-    if (response.status === 401) {
-      localStorage.removeItem("ecu_token");
-    }
-    
-    return await response.json();
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.error || "Erreur serveur");
+    return data;
   } catch (err) {
     console.error("Erreur API:", err);
-    return { error: "Erreur de connexion au serveur" };
+    throw err;
   }
 };
