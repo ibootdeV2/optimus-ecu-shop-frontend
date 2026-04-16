@@ -4,7 +4,6 @@ import { AuthProvider, useAuth } from "./context/AuthContext";
 import AuthPage from "./pages/AuthPage";
 import Shop from "./pages/Shop";
 import Admin, { AdminLogin } from "./pages/Admin";
-import Dashboard from "./pages/Dashboard";
 
 function AppRouter() {
   const { user, loading } = useAuth();
@@ -13,26 +12,17 @@ function AppRouter() {
   useEffect(() => {
     if (!loading) {
       const params = new URLSearchParams(window.location.search);
-      const isAdminUrl = params.get("admin") === "x7k9p2";
-
-      if (isAdminUrl) {
+      if (params.get("admin") === "x7k9p2") {
         setPage("admin-login");
       } else if (user) {
-        setPage("shop"); // Utilisateur connecté -> Boutique
+        setPage("shop");
       } else {
-        setPage("auth"); // Non connecté -> Login forcé
+        setPage("auth");
       }
     }
   }, [user, loading]);
 
-  if (loading || !page) {
-    return (
-      <div className="app-loading">
-        <div className="app-loading-ring"></div>
-        <p style={{color: "white", marginTop: "10px"}}>DAGOAUTO...</p>
-      </div>
-    );
-  }
+  if (loading || !page) return <div className="app-loading"><div className="app-loading-ring"></div></div>;
 
   return (
     <>
@@ -40,7 +30,6 @@ function AppRouter() {
       {page === "shop" && <Shop nav={setPage} />}
       {page === "admin-login" && <AdminLogin nav={setPage} />}
       {page === "admin" && <Admin nav={setPage} />}
-      {page === "dashboard" && <Dashboard nav={setPage} />}
     </>
   );
 }
