@@ -4,41 +4,47 @@ import { AuthProvider, useAuth } from "./context/AuthContext";
 import AuthPage from "./pages/AuthPage";
 import Shop from "./pages/Shop";
 import Admin, { AdminLogin } from "./pages/Admin";
+import Dashboard from "./pages/Dashboard";
 
-// On crée un composant interne pour pouvoir utiliser useAuth()
 function AppRouter() {
-  const auth = useAuth();
-  const [page, setPage] = useState("auth");
-
-  // Sécurité : si AuthContext met trop de temps à charger
-  if (!auth) return <div style={{color: "white", padding: "20px"}}>Erreur: AuthProvider manquant</div>;
-
-  const { user, loading } = auth;
+  const { user, loading } = useAuth();
+  const [page, setPage] = useState(null);
 
   useEffect(() => {
     if (!loading) {
       const params = new URLSearchParams(window.location.search);
-      if (params.get("admin") === "x7k9p2") {
+      const isAdminUrl = params.get("admin") === "x7k9p2";
+
+      if (isAdminUrl) {
         setPage("admin-login");
+      } else if (user) {
+        setPage("shop"); // Utilisateur connecté -> Boutique
       } else {
-        setPage(user ? "shop" : "auth");
+        setPage("auth"); // Non connecté -> Login forcé
       }
     }
   }, [user, loading]);
 
-  if (loading) return <div className="app-loading"><div className="app-loading-ring"></div></div>;
+  if (loading || !page) {
+    return (
+      <div className="app-loading">
+        <div className="app-loading-ring"></div>
+        <p style={{color: "white", marginTop: "10px"}}>DAGOAUTO...</p>
+      </div>
+    );
+  }
 
   return (
-    <div className="app-main-container">
+    <>
       {page === "auth" && <AuthPage nav={setPage} />}
       {page === "shop" && <Shop nav={setPage} />}
       {page === "admin-login" && <AdminLogin nav={setPage} />}
       {page === "admin" && <Admin nav={setPage} />}
-    </div>
+      {page === "dashboard" && <Dashboard nav={setPage} />}
+    </>
   );
 }
 
-// Le composant principal qui enveloppe tout avec le Provider
 export default function App() {
   return (
     <AuthProvider>
