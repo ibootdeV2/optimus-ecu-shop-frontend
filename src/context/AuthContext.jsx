@@ -1,21 +1,25 @@
 import { createContext, useContext, useState, useEffect } from "react";
+
 const AuthContext = createContext(null);
-const API = "http://localhost:3001";
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const saved = localStorage.getItem("ecu_user");
-    if (saved) setUser(JSON.parse(saved));
+    try {
+      const saved = localStorage.getItem("ecu_user");
+      if (saved) setUser(JSON.parse(saved));
+    } catch (e) {
+      console.error("Erreur localStorage", e);
+    }
     setLoading(false);
   }, []);
 
-  const login = (data) => {
-    localStorage.setItem("ecu_token", data.token);
-    localStorage.setItem("ecu_user", JSON.stringify(data.user));
-    setUser(data.user);
+  const login = (userData, token) => {
+    localStorage.setItem("ecu_token", token);
+    localStorage.setItem("ecu_user", JSON.stringify(userData));
+    setUser(userData);
   };
 
   const logout = () => {
@@ -24,9 +28,10 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout, getToken: () => localStorage.getItem("ecu_token") }}>
+    <AuthContext.Provider value={{ user, loading, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
 }
+
 export const useAuth = () => useContext(AuthContext);
