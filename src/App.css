@@ -1,31 +1,55 @@
 @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700&family=Barlow:wght@400;500&display=swap');
 
 :root {
-  --bg: #0d0d0f;
-  --bg2: #151518;
-  --bg3: #1c1c21;
-  --border: #2a2a32;
-  --text: #f0f0f2;
-  --accent: #e5171f;
+  --bg:      #0d0d0f;
+  --bg2:     #151518;
+  --bg3:     #1c1c21;
+  --border:  #2a2a32;
+  --text:    #f0f0f2;
+  --accent:  #e5171f; /* Rouge DagoAuto */
+  --accent2: #ff4d4d;
 }
 
-body { background: var(--bg); color: var(--text); font-family: 'Barlow', sans-serif; margin: 0; }
+body { font-family: 'Barlow', sans-serif; background: var(--bg); color: var(--text); margin: 0; }
 
-.login-page { min-height: 100vh; display: flex; align-items: center; justify-content: center; }
-.login-box { background: var(--bg2); padding: 40px; border-radius: 16px; border: 1px solid var(--border); text-align: center; width: 350px; }
-.input-field { width: 100%; padding: 12px; margin-bottom: 15px; background: var(--bg3); border: 1px solid var(--border); color: white; border-radius: 8px; box-sizing: border-box; }
-.login-btn { width: 100%; padding: 12px; background: var(--accent); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
-
-/* TOOLTIP FLOTTANT */
-.name-with-tooltip { position: relative; display: inline-block; cursor: help; color: var(--accent); font-weight: bold; }
-.tooltip {
-  visibility: hidden; opacity: 0; position: absolute; bottom: 125%; left: 50%;
-  transform: translateX(-50%); background: #1c1c21; color: white; padding: 10px;
-  border-radius: 8px; border: 1px solid var(--accent); z-index: 100; min-width: 180px;
-  transition: 0.2s; pointer-events: none; box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+/* MISE EN PAGE CENTRÉE */
+.auth-page { 
+  min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; 
 }
-.name-with-tooltip:hover .tooltip { visibility: visible; opacity: 1; }
 
-.admin-wrap { padding: 40px; max-width: 1200px; margin: auto; }
-.admin-table { width: 100%; border-collapse: collapse; background: var(--bg2); border-radius: 12px; overflow: hidden; }
-.admin-table th, .admin-table td { padding: 15px; text-align: left; border-bottom: 1px solid var(--border); }
+.auth-box { 
+  background: var(--bg2); border: 1px solid var(--border); padding: 40px; 
+  border-radius: 16px; width: 100%; max-width: 400px; text-align: center;
+}
+
+.auth-logo { font-family: 'Barlow Condensed'; font-size: 28px; font-weight: 700; margin-bottom: 25px; }
+.auth-logo strong { color: var(--accent); }
+
+/* BOUTON GOOGLE */
+.google-btn { 
+  width: 100%; padding: 12px; background: #fff; color: #000; border: none; 
+  border-radius: 8px; display: flex; align-items: center; justify-content: center; 
+  gap: 10px; cursor: pointer; font-weight: 600; margin-bottom: 20px;
+}
+
+.auth-divider { color: #555; font-size: 12px; text-transform: uppercase; margin-bottom: 20px; }
+
+/* ONGLETS CONNEXION / INSCRIPTION */
+.auth-tabs { display: flex; gap: 5px; background: var(--bg3); padding: 5px; border-radius: 8px; margin-bottom: 20px; }
+.auth-tab { flex: 1; border: none; background: none; color: #888; padding: 10px; cursor: pointer; border-radius: 6px; transition: 0.3s; }
+.auth-tab.active { background: var(--bg2); color: white; }
+
+/* CHAMPS DE SAISIE */
+.auth-field { text-align: left; margin-bottom: 15px; }
+.auth-field input { 
+  width: 100%; background: var(--bg3); border: 1px solid var(--border); 
+  color: white; padding: 14px; border-radius: 8px; box-sizing: border-box; outline: none;
+}
+.auth-field input:focus { border-color: var(--accent); }
+
+/* BOUTON ROUGE */
+.auth-submit { 
+  width: 100%; padding: 14px; background: var(--accent); color: white; 
+  border: none; border-radius: 8px; font-weight: 700; cursor: pointer; margin-top: 10px;
+}
+.auth-submit:hover { background: var(--accent2); }
