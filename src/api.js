@@ -5,14 +5,15 @@ export const apiCall = async (endpoint, method = "GET", body = null) => {
   const headers = { "Content-Type": "application/json" };
   if (token) headers["Authorization"] = `Bearer ${token}`;
 
-  const response = await fetch(`${BASE_URL}${endpoint}`, {
-    method,
-    headers,
-    body: body ? JSON.stringify(body) : null,
-  });
-
-  if (response.status === 401) {
-    localStorage.removeItem("ecu_token");
+  try {
+    const response = await fetch(`${BASE_URL}${endpoint}`, {
+      method,
+      headers,
+      body: body ? JSON.stringify(body) : null,
+    });
+    if (response.status === 401) localStorage.removeItem("ecu_token");
+    return await response.json();
+  } catch (err) {
+    return { error: "Erreur réseau" };
   }
-  return response.json();
 };

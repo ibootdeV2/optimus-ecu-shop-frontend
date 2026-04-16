@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
 import { apiCall } from "../api";
 
+// ─── ICONS ───────────────────────────────────────────────────────
 const TrashIcon = () => <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M3 4h10M6 4V3h4v1M5 4v8h6V4H5z"/></svg>;
 const PlusIcon = () => <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M8 3v10M3 8h10"/></svg>;
 
+// ─── MANAGERS ────────────────────────────────────────────────────
 function BrandsManager({ brands, onChange }) {
   const [selBrand, setSelBrand] = useState("");
   const [newBrand, setNewBrand] = useState("");
@@ -33,7 +35,7 @@ function BrandsManager({ brands, onChange }) {
         <button className={activeTab === "models" ? "active" : ""} onClick={() => setActiveTab("models")} disabled={!selBrand}>Modèles ({selBrand})</button>
       </div>
       {activeTab === "brands" ? (
-        <>
+        <div className="manager-content">
           <div className="manager-add-row">
             <input className="manager-input" placeholder="AUDI..." value={newBrand} onChange={e => setNewBrand(e.target.value)} />
             <button className="manager-add-btn" onClick={addBrand}><PlusIcon /> Ajouter</button>
@@ -46,9 +48,9 @@ function BrandsManager({ brands, onChange }) {
               </div>
             ))}
           </div>
-        </>
+        </div>
       ) : (
-        <>
+        <div className="manager-content">
           <div className="manager-add-row">
             <input className="manager-input" placeholder="A3..." value={newModel} onChange={e => setNewModel(e.target.value)} />
             <button className="manager-add-btn" onClick={addModel}><PlusIcon /> Ajouter</button>
@@ -61,12 +63,13 @@ function BrandsManager({ brands, onChange }) {
               </div>
             ))}
           </div>
-        </>
+        </div>
       )}
     </div>
   );
 }
 
+// ─── MAIN PAGE ───────────────────────────────────────────────────
 export default function Admin({ nav }) {
   const [tab, setTab] = useState("users");
   const [users, setUsers] = useState([]);
@@ -74,86 +77,106 @@ export default function Admin({ nav }) {
   const [catalog, setCatalog] = useState([]);
   const [stats, setStats] = useState({ users: 0, downloads: 0 });
   const [loading, setLoading] = useState(true);
+  const token = localStorage.getItem("ecu_token");
 
   const loadData = async () => {
-    try {
-      const [cfg, u, f, s] = await Promise.all([
-        apiCall("/api/config"),
-        apiCall("/api/admin/users"),
-        apiCall("/api/files"),
-        apiCall("/api/admin/stats")
-      ]);
-      setBrands(cfg.brands || {});
-      setUsers(u || []);
-      setCatalog(f || []);
-      setStats(s || { users: 0, downloads: 0 });
-    } catch (e) { console.error(e); }
-    finally { setLoading(false); }
+    const cfg = await apiCall("/api/config");
+    const u = await apiCall("/api/admin/users");
+    const f = await apiCall("/api/files");
+    const s = await apiCall("/api/admin/stats");
+    if (cfg.brands) setBrands(cfg.brands);
+    setUsers(u || []);
+    setCatalog(f || []);
+    setStats(s || { users: 0, downloads: 0 });
+    setLoading(false);
   };
 
   useEffect(() => { loadData(); }, [tab]);
 
+  if (!token) return <AdminLogin nav={nav} />;
   if (loading) return <div className="app-loading"><div className="app-loading-ring"></div></div>;
 
   return (
     <div className="admin-wrap">
       <div className="admin-topbar">
         <h1>DAGOAUTO Admin</h1>
-        <button className="logout-btn" onClick={() => { localStorage.clear(); nav("shop"); }}>Sortir</button>
+        <button className="nav-btn" onClick={() => { localStorage.clear(); nav("shop"); }}>Sortir</button>
       </div>
+
       <div className="stats-row">
+        <div className="stat-card"><h3>{catalog.length}</h3><p>Fichiers</p></div>
         <div className="stat-card"><h3>{stats.users}</h3><p>Membres</p></div>
-        <div className="stat-card"><h3>{stats.downloads}</h3><p>Téléchargements</p></div>
+        <div className="stat-card"><h3>{stats.downloads}</h3><p>Total Downloads</p></div>
       </div>
+
       <div className="admin-tabs">
         <button className={tab === "users" ? "active" : ""} onClick={() => setTab("users")}>Utilisateurs</button>
-        <button className={tab === "config" ? "active" : ""} onClick={() => setTab("config")}>Marques</button>
+        <button className={tab === "config" ? "active" : ""} onClick={() => setTab("config")}>Marques & Modèles</button>
+        <button className={tab === "catalog" ? "active" : ""} onClick={() => setTab("catalog")}>Catalogue</button>
       </div>
+
       {tab === "users" && (
-        <table className="admin-table">
-          <thead><tr><th>Nom</th><th>Statut</th><th>Action</th></tr></thead>
-          <tbody>
-            {users.map(u => (
-              <tr key={u.id}>
-                <td>
-                  <div className="name-with-tooltip">
-                    {u.name}
-                    <div className="tooltip">📧 {u.email}<br/>📦 {u.total_files} fichiers</div>
-                  </div>
-                </td>
-                <td>{u.is_banned ? "Banni" : "Actif"}</td>
-                <td><button onClick={async () => { await apiCall(`/api/admin/users/${u.id}/toggle-ban`, "POST"); loadData(); }}>Ban/Unban</button></td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <div className="admin-table-wrap">
+          <table className="admin-table">
+            <thead><tr><th>Nom</th><th>Statut</th><th>Inscrit le</th><th>Action</th></tr></thead>
+            <tbody>
+              {users.map(u => (
+                <tr key={u.id} className={u.is_banned ? "row-banned" : ""}>
+                  <td>
+                    <div className="name-with-tooltip">
+                      <strong>{u.name}</strong>
+                      <div className="tooltip">📧 {u.email} <br/> 📦 {u.total_files} fichiers</div>
+                    </div>
+                  </td>
+                  <td>{u.is_banned ? "Banni" : "Actif"}</td>
+                  <td>{new Date(u.created_at).toLocaleDateString()}</td>
+                  <td><button className="tbl-del" onClick={async () => { await apiCall(`/api/admin/users/${u.id}/toggle-ban`, "POST"); loadData(); }}>Ban/Unban</button></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
+
       {tab === "config" && (
         <BrandsManager brands={brands} onChange={(val) => apiCall("/api/admin/config", "POST", { key: "brands", value: val })} />
+      )}
+
+      {tab === "catalog" && (
+        <div className="admin-table-wrap">
+          <table className="admin-table">
+            <thead><tr><th>Véhicule</th><th>Type ECU</th><th>Réf</th></tr></thead>
+            <tbody>
+              {catalog.map(f => (
+                <tr key={f.id}>
+                  <td>{f.brand} {f.model}</td>
+                  <td>{f.calc_type}</td>
+                  <td>{f.ecu_ref}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
     </div>
   );
 }
 
+// ─── LOGIN ───────────────────────────────────────────────────────
 export function AdminLogin({ nav }) {
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
   const handle = async () => {
-    const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/login`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password: pass })
-    });
-    const d = await res.json();
-    if (d.token) { localStorage.setItem("ecu_token", d.token); nav("admin"); }
-    else alert("Erreur de connexion");
+    const d = await apiCall("/api/admin/login", "POST", { email, password: pass });
+    if (d.token) { localStorage.setItem("ecu_token", d.token); window.location.reload(); }
+    else alert("Erreur identifiants");
   };
   return (
     <div className="login-page"><div className="login-box">
-      <h2>DAGOAUTO Admin</h2>
-      <input placeholder="Email" onChange={e => setEmail(e.target.value)} />
-      <input type="password" placeholder="Pass" onChange={e => setPass(e.target.value)} />
-      <button className="login-btn" onClick={handle}>Entrer</button>
+      <h2>Administration</h2>
+      <input className="manager-input" placeholder="Email" onChange={e => setEmail(e.target.value)} />
+      <input className="manager-input" type="password" placeholder="Mdp" onChange={e => setPass(e.target.value)} />
+      <button className="login-btn" onClick={handle}>Se connecter</button>
     </div></div>
   );
 }

@@ -1,52 +1,59 @@
 import { useState, useEffect } from "react";
-import { apiCall } from "../api"; // Utilisation du helper centralisé
+import { apiCall } from "../api";
 
 export default function Shop({ nav }) {
   const [brands, setBrands] = useState({});
   const [files, setFiles] = useState([]);
+  const [fBrand, setFBrand] = useState("");
+  const [fModel, setFModel] = useState("");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    apiCall("/api/config").then(d => setBrands(d.brands || {}));
-    apiCall("/api/files").then(setFiles);
+    const load = async () => {
+      const cfg = await apiCall("/api/config");
+      const f = await apiCall("/api/files");
+      setBrands(cfg.brands || {});
+      setFiles(f || []);
+      setLoading(false);
+    };
+    load();
   }, []);
 
-  const handleDownload = async (fileId) => {
-    const data = await apiCall("/api/download", "POST", { fileId });
-    if (data.downloadUrl) window.open(data.downloadUrl, "_blank");
-  };
+  const models = fBrand ? Object.keys(brands[fBrand]?.models || {}) : [];
 
+  if (loading) return <div className="app-loading">Chargement...</div>;
 
   return (
     <div className="app">
       <header className="site-header">
         <div className="header-inner">
-          <div className="site-logo">DAGO<strong>AUTO</strong></div>
-          <button className="nav-btn" onClick={()=>nav(user?"dashboard":"auth")}>{user?user.name:"Connexion"}</button>
+          <div className="site-logo">DAGOAUTO</div>
+          <button className="nav-btn" onClick={() => nav("auth")}>Connexion</button>
         </div>
       </header>
+
       <div className="hero">
-        <h1>Catalogue Fichiers ECU</h1>
         <div className="search-bar-pro">
-          <select value={fBrand} onChange={e=>{setFBrand(e.target.value); setFModel("")}}>
+          <select value={fBrand} onChange={e => {setFBrand(e.target.value); setFModel("")}}>
             <option value="">Marque</option>
-            {Object.keys(brands).map(b=><option key={b}>{b}</option>)}
+            {Object.keys(brands).map(b => <option key={b}>{b}</option>)}
           </select>
-          <select disabled={!fBrand} value={fModel} onChange={e=>setFModel(e.target.value)}>
+          <select disabled={!fBrand} value={fModel} onChange={e => setFModel(e.target.value)}>
             <option value="">Modèle</option>
-            {fBrand && Object.keys(brands[fBrand].models).map(m=><option key={m}>{m}</option>)}
+            {models.map(m => <option key={m}>{m}</option>)}
           </select>
         </div>
       </div>
+
       <div className="cards-grid">
-        {files.filter(f=>(!fBrand||f.brand===fBrand)&&(!fModel||f.model===fModel)).map(f=>(
-          <div key={f.id} className="file-card">
-            <div className="card-tags">{f.tags.map(t=><span key={t} className="tag-badge">{t}</span>)}</div>
-            <h3>{f.brand} {f.model}</h3>
-            <p>{f.engine} · {f.ecu_ref}</p>
-            <div className="card-footer">
-              <span className="price">{f.price > 0 ? `${f.price}€` : "GRATUIT"}</span>
-              <button className="buy-btn" onClick={()=>handleDl(f.id)}>Télécharger</button>
-            </div>
+        {files.filter(f => (!fBrand || f.brand === fBrand) && (!fModel || f.model === fModel)).map(file => (
+          <div key={file.id} className="file-card">
+            <h3>{file.brand} {file.model}</h3>
+            <p>{file.engine} · {file.ecu_ref}</p>
+            <button className="buy-btn" onClick={async () => {
+              const d = await apiCall("/api/download", "POST", { fileId: file.id });
+              if (d.downloadUrl) window.open(d.downloadUrl, "_blank");
+            }}>Télécharger</button>
           </div>
         ))}
       </div>
