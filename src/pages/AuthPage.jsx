@@ -7,43 +7,52 @@ export default function AuthPage({ nav }) {
   const [mode, setMode] = useState("login");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+
+  // Redirection vers le Backend pour Google
+  const handleGoogle = () => {
+    window.location.href = `${import.meta.env.VITE_API_URL}/api/auth/google`;
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
     setLoading(true);
     try {
       const endpoint = mode === "login" ? "/api/auth/login" : "/api/auth/register";
-      const body = mode === "login" ? { email, password } : { name, email, password };
-      
-      const res = await apiCall(endpoint, "POST", body);
+      const res = await apiCall(endpoint, "POST", { email, password });
       if (res.token) {
         login(res.user, res.token);
         nav("shop");
       }
     } catch (err) {
-      setError("Identifiants incorrects ou erreur réseau.");
-    } finally {
-      setLoading(false);
-    }
+      alert("Erreur de connexion");
+    } finally { setLoading(false); }
   };
 
   return (
     <div className="auth-page">
       <form className="auth-box" onSubmit={handleSubmit}>
         <div className="auth-logo">DAGO<strong>AUTO</strong></div>
+        
+        {/* BOUTON GOOGLE RÉACTIVÉ */}
+        <button type="button" className="google-btn" onClick={handleGoogle}>
+          <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" width="18" alt="Google" />
+          Continuer avec Google
+        </button>
+
+        <div className="auth-divider">ou par email</div>
+
         <div className="auth-tabs">
           <div className={`auth-tab ${mode === "login" ? "active" : ""}`} onClick={() => setMode("login")}>Connexion</div>
           <div className={`auth-tab ${mode === "register" ? "active" : ""}`} onClick={() => setMode("register")}>Inscription</div>
         </div>
-        {error && <div style={{color: "#ff4d4d", marginBottom: "10px", fontSize: "13px"}}>{error}</div>}
-        {mode === "register" && <input className="modal-input" placeholder="Nom" onChange={e => setName(e.target.value)} required />}
+
         <input className="modal-input" type="email" placeholder="Email" onChange={e => setEmail(e.target.value)} required />
-        <input className="modal-input" type="password" placeholder="Moteur de passe" onChange={e => setPassword(e.target.value)} required />
-        <button type="submit" className="auth-submit" disabled={loading}>{loading ? "..." : "Continuer"}</button>
+        <input className="modal-input" type="password" placeholder="Mot de passe" onChange={e => setPassword(e.target.value)} required />
+        
+        <button type="submit" className="auth-submit" disabled={loading}>
+          {loading ? "Chargement..." : "Continuer"}
+        </button>
       </form>
     </div>
   );

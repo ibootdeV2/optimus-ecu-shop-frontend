@@ -59,3 +59,29 @@ body {
 .cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; padding: 20px; }
 .file-card { background: var(--bg2); border: 1px solid var(--border); padding: 20px; border-radius: 15px; transition: 0.3s; }
 .file-card:hover { border-color: var(--accent); transform: translateY(-5px); }
+
+.google-btn {
+  width: 100%;
+  padding: 12px;
+  background: white;
+  color: black;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  margin-bottom: 20px;
+  font-family: inherit;
+}
+.google-btn:hover {
+  background: #f7f7f7;
+}
+.auth-divider {
+  margin: 15px 0;
+  color: var(--muted);
+  font-size: 12px;
+  text-transform: uppercase;
+}

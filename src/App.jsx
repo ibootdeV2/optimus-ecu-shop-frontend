@@ -6,12 +6,24 @@ import Shop from "./pages/Shop";
 import Admin, { AdminLogin } from "./pages/Admin";
 
 function AppRouter() {
-  const { user, loading } = useAuth();
-  const [page, setPage] = useState(null);
+  const { user, loading, login } = useAuth();
+  const [page, setPage] = useState("auth");
 
   useEffect(() => {
     if (!loading) {
       const params = new URLSearchParams(window.location.search);
+      const token = params.get("token");
+
+      // 1. Si on revient de Google avec un token dans l'URL
+      if (token) {
+        // On simule un objet user (le backend pourra renvoyer plus d'infos plus tard)
+        login({ email: "Google User" }, token);
+        window.history.replaceState({}, "", "/"); // On nettoie l'URL
+        setPage("shop");
+        return;
+      }
+
+      // 2. Vérification Admin ou User classique
       if (params.get("admin") === "x7k9p2") {
         setPage("admin-login");
       } else if (user) {
@@ -22,7 +34,7 @@ function AppRouter() {
     }
   }, [user, loading]);
 
-  if (loading || !page) return <div className="app-loading"><div className="app-loading-ring"></div></div>;
+  if (loading) return <div className="app-loading"><div className="app-loading-ring"></div></div>;
 
   return (
     <>
